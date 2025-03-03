@@ -1,5 +1,10 @@
 "use strict";
 
+/* 
+	Goal: Function purity (extract function impurity)
+	the idea is that from the caller's perspective this function behaves predictable.
+*/
+
 var students = [
 	{ id: 260, name: "Kyle" },
 	{ id: 729, name: "Susan" },
@@ -7,15 +12,24 @@ var students = [
 	{ id: 74, name: "Jessica" },
 	{ id: 491, name: "Ally" }
 ];
+/* 
+	Containing the Lexical Scope Technique
+	and return a new copy 
+*/
+function getStudentsByName(students) { 
+	students = [...students]
 
-function sortStudentsByName() {
-	// Don't modify this function
-	students.sort(function byName(s1,s2){
-		if (s1.name < s2.name) return -1;
-		else if (s1.name > s2.name) return 1;
-		else return 0;
-	});
-	return students;
+	return sortStudentsByName()
+
+	function sortStudentsByName() {
+		// Don't modify this function
+		students.sort(function byName(s1,s2){
+			if (s1.name < s2.name) return -1;
+			else if (s1.name > s2.name) return 1;
+			else return 0;
+		});
+		return students;
+	}
 }
 
 function sortStudentsByID() {
@@ -28,11 +42,18 @@ function sortStudentsByID() {
 
 // *************************************
 
-// modify/move this function
-function getStudentsByName() { return students; }
-
-// modify/move this function
-function getStudentsByID() { return students; }
+/* 
+	Brute force technique
+	1. Take the current snapshot of everything
+	2. And then restore it afterwards
+*/
+function getStudentsByID(currentStudents) { 
+	const originalStudents = [...students]
+	students = [...currentStudents]
+	const newStudents = sortStudentsByID()
+	students = originalStudents
+	return newStudents
+}
 
 // *************************************
 
