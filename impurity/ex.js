@@ -1,5 +1,10 @@
 "use strict";
 
+/* 
+	Goal: Function purity (extract function impurity)
+	the idea is that from the caller's perspective this function behaves predictable.
+*/
+
 var students = [
 	{ id: 260, name: "Kyle" },
 	{ id: 729, name: "Susan" },
@@ -7,7 +12,10 @@ var students = [
 	{ id: 74, name: "Jessica" },
 	{ id: 491, name: "Ally" }
 ];
-
+/* 
+	Containing the Lexical Scope Technique
+	and return a new copy 
+*/
 function getStudentsByName(students) { 
 	students = [...students]
 
@@ -34,11 +42,18 @@ function sortStudentsByID() {
 
 // *************************************
 
-// modify/move this function
-
-
-// modify/move this function
-function getStudentsByID() { return students; }
+/* 
+	Brute force technique
+	1. Take the current snapshot of everything
+	2. And then restore it afterwards
+*/
+function getStudentsByID(currentStudents) { 
+	const originalStudents = [...students]
+	students = [...currentStudents]
+	const newStudents = sortStudentsByID()
+	students = originalStudents
+	return newStudents
+}
 
 // *************************************
 
