@@ -5,8 +5,14 @@ function decrement(x) { return x - 1; }
 function double(x) { return x * 2; }
 function half(x) { return x / 2; }
 
-function compose() { return compose; }
-function pipe() { return pipe; }
+function compose(...fns) { 
+    return function(arg) {
+        return fns.reduceRight( (acc, fn) => fn(acc), arg )
+    }
+}
+function pipe(...fns) { 
+    return compose(...fns.reverse())
+ }
 
 var f1 = compose(increment,decrement);
 var f2 = pipe(decrement,increment);
