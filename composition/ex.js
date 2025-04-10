@@ -6,12 +6,18 @@ function double(x) { return x * 2; }
 function half(x) { return x / 2; }
 
 function compose(...fns) { 
+    // return pipe(...fns.reverse())
     return function(arg) {
         return fns.reduceRight( (acc, fn) => fn(acc), arg )
     }
 }
 function pipe(...fns) { 
-    return compose(...fns.reverse())
+    return function piped(v) {
+        for (const fn of fns) {
+            v = fn(v)
+        }
+        return v
+    }
  }
 
 var f1 = compose(increment,decrement);
